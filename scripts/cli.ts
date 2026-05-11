@@ -9,6 +9,10 @@ import { manual, submodules, vendors } from '../meta.ts'
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const root = join(__dirname, '..')
 
+const RE_BACKSLASH_TO_SLASH = /\\/g
+const RE_LEADING_SLASH = /^\//
+const RE_REL_PATH_LEADING_SEP = /^[/\\]/
+
 function exec(cmd: string, cwd = root): string {
   return execSync(cmd, { cwd, encoding: 'utf-8', stdio: ['pipe', 'pipe', 'pipe'] }).trim()
 }
@@ -20,6 +24,13 @@ function execSafe(cmd: string, cwd = root): string | null {
   catch {
     return null
   }
+}
+
+/** 从 vendor 根目录整仓同步时跳过 VCS 与依赖目录 */
+function shouldSkipVendorRelPath(rel: string): boolean {
+  const norm = rel.replace(RE_BACKSLASH_TO_SLASH, '/').replace(RE_LEADING_SLASH, '')
+  const segments = norm.split('/')
+  return segments.includes('.git') || segments.includes('node_modules')
 }
 
 function getGitSha(dir: string): string | null {
@@ -66,6 +77,7 @@ interface Project {
 
 interface VendorConfig {
   source: string
+  skillsRoot?: string
   skills: Record<string, string> // sourceSkillName -> outputSkillName
 }
 
@@ -192,25 +204,29 @@ async function syncSubmodules() {
   for (const [vendorName, config] of Object.entries(vendors)) {
     const vendorConfig = config as VendorConfig
     const vendorPath = join(root, 'vendor', vendorName)
-    const vendorSkillsPath = join(vendorPath, 'skills')
+    const skillsRootRel = vendorConfig.skillsRoot ?? 'skills'
+    const vendorSkillsBase = skillsRootRel === '.'
+      ? vendorPath
+      : join(vendorPath, skillsRootRel)
 
     if (!existsSync(vendorPath)) {
       p.log.warn(`Vendor submodule not found: ${vendorName}. Run init first.`)
       continue
     }
 
-    if (!existsSync(vendorSkillsPath)) {
-      p.log.warn(`No skills directory in vendor/${vendorName}/skills/`)
+    if (skillsRootRel !== '.' && !existsSync(vendorSkillsBase)) {
+      p.log.warn(`No skills directory in vendor/${vendorName}/${skillsRootRel}/`)
       continue
     }
 
     // Sync each specified skill
     for (const [sourceSkillName, outputSkillName] of Object.entries(vendorConfig.skills)) {
-      const sourceSkillPath = join(vendorSkillsPath, sourceSkillName)
+      const sourceSkillPath = join(vendorSkillsBase, sourceSkillName)
       const outputPath = join(root, 'skills', outputSkillName)
 
       if (!existsSync(sourceSkillPath)) {
-        p.log.warn(`Skill not found: vendor/${vendorName}/skills/${sourceSkillName}`)
+        const relHint = skillsRootRel === '.' ? sourceSkillName : `${skillsRootRel}/${sourceSkillName}`
+        p.log.warn(`Skill not found: vendor/${vendorName}/${relHint}`)
         continue
       }
 
@@ -227,7 +243,9 @@ async function syncSubmodules() {
       for (const file of files) {
         if (file.isFile()) {
           const fullPath = join(file.parentPath, file.name)
-          const relativePath = fullPath.replace(sourceSkillPath, '')
+          const relativePath = fullPath.replace(sourceSkillPath, '').replace(RE_REL_PATH_LEADING_SEP, '')
+          if (shouldSkipVendorRelPath(relativePath))
+            continue
           const destPath = join(outputPath, relativePath)
 
           // Ensure destination directory exists
@@ -255,9 +273,13 @@ async function syncSubmodules() {
       const syncPath = join(outputPath, 'SYNC.md')
       const date = new Date().toISOString().split('T')[0]
 
+      const syncSource = skillsRootRel === '.'
+        ? `\`vendor/${vendorName}\` (repository root)`
+        : `\`vendor/${vendorName}/skills/${sourceSkillName}\``
+
       const syncContent = `# Sync Info
 
-- **Source:** \`vendor/${vendorName}/skills/${sourceSkillName}\`
+- **Source:** ${syncSource}
 - **Git SHA:** \`${sha}\`
 - **Synced:** ${date}
 `

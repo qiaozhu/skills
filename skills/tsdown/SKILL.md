@@ -57,6 +57,8 @@ export default defineConfig({
 | CLI Reference | All CLI commands and options | [reference-cli](references/reference-cli.md) |
 | Migrate from tsup | Migration guide and compatibility notes | [guide-migrate-from-tsup](references/guide-migrate-from-tsup.md) |
 | Plugins | Rolldown, Rollup, Unplugin support | [advanced-plugins](references/advanced-plugins.md) |
+
+> For comprehensive migration assistance with complete option mappings, install the dedicated [`tsdown-migrate`](../tsdown-migrate/SKILL.md) skill: `npx skills add rolldown/tsdown --skill tsdown-migrate`
 | Hooks | Lifecycle hooks for custom logic | [advanced-hooks](references/advanced-hooks.md) |
 | Programmatic API | Build from Node.js scripts | [advanced-programmatic](references/advanced-programmatic.md) |
 | Rolldown Options | Pass options directly to Rolldown | [advanced-rolldown-options](references/advanced-rolldown-options.md) |
@@ -87,7 +89,7 @@ export default defineConfig({
 | Always bundle | `deps: { alwaysBundle: ['dep-to-bundle'] }` | [option-dependencies](references/option-dependencies.md) |
 | Only bundle | `deps: { onlyBundle: ['cac', 'bumpp'] }` - Whitelist | [option-dependencies](references/option-dependencies.md) |
 | Skip node_modules | `deps: { skipNodeModulesBundle: true }` | [option-dependencies](references/option-dependencies.md) |
-| Auto external | Automatic peer/dependency externalization | [option-dependencies](references/option-dependencies.md) |
+| Auto external | Automatic dependency/peer/optional externalization | [option-dependencies](references/option-dependencies.md) |
 
 ## Output Enhancement
 
@@ -96,7 +98,8 @@ export default defineConfig({
 | Shims | `shims: true` - Add ESM/CJS compatibility | [option-shims](references/option-shims.md) |
 | CJS default | `cjsDefault: true` (default) / `false` | [option-cjs-default](references/option-cjs-default.md) |
 | Package exports | `exports: true` - Auto-generate exports field | [option-package-exports](references/option-package-exports.md) |
-| CSS handling | **[experimental]** `css: { ... }` — full pipeline with preprocessors, Lightning CSS, PostCSS, code splitting; requires `@tsdown/css` | [option-css](references/option-css.md) |
+| CSS handling | **[experimental]** `css: { ... }` — full pipeline with preprocessors, Lightning CSS, PostCSS, CSS modules, code splitting; requires `@tsdown/css` | [option-css](references/option-css.md) |
+| CSS modules | `css: { modules: { localsConvention: 'camelCase' } }` — scoped class names for `.module.css` files | [option-css](references/option-css.md) |
 | CSS inject | `css: { inject: true }` — preserve CSS imports in JS output | [option-css](references/option-css.md) |
 | Unbundle mode | `unbundle: true` - Preserve directory structure | [option-unbundle](references/option-unbundle.md) |
 | Root directory | `root: 'src'` - Control output directory mapping | [option-root](references/option-root.md) |

@@ -18,6 +18,28 @@ or to install all of them globally:
 pnpx skills add antfu/skills --skill='*' -g
 ```
 
+
+## Coding Practices
+| 内容 | 说明 |
+|-------|-------------|
+| [`CODING_PRACTICES.md`](CODING_PRACTICES.md) | Karpathy 行为准则 + antfu「Coding Practices」节选；**复制全文**到业务项目 `AGENTS.md` / `CLAUDE.md` 顶部（非 Agent Skill） |
+
+### Install
+
+Download:
+```bash
+curl -o CODING_PRACTICES.md http://git.wuhanyunxi.top/front-end/lib/yxzn-skills.git/master/CODING_PRACTICES.md
+```
+
+Append to AGENTS.md or CLAUDE.md:
+```bash
+echo "@CODING_PRACTICES.md" | cat - AGENTS.md > temp && mv temp AGENTS.md
+echo "@CODING_PRACTICES.md" | cat - CLAUDE.md > temp && mv temp CLAUDE.md
+```
+
+
+
+
 Learn more about the CLI usage at [skills](https://github.com/vercel-labs/skills).
 
 ## Skills
@@ -28,13 +50,13 @@ This collection is aim to be a one-stop collection of you are mainly working on 
 
 > Opinionated
 
-Manually maintained by Anthony Fu with his preferred tools, setup conventions, and best practices.
+Maintained manually in-repo (fork-specific), e.g. **`yxzn`** under `skills/`.
 
-| Skill | Description |
-|-------|-------------|
-| [antfu](skills/antfu) | Anthony Fu's preferences and best practices for app/library projects (eslint, pnpm, vitest, vue, etc.) |
+
+
 
 ### Skills Generated from Official Documentation
+
 
 > Unopinionated but with tilted focus (e.g. TypeScript, ESM, Composition API, and other modern stacks)
 

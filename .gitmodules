@@ -43,3 +43,6 @@
 [submodule "sources/nitro"]
 	path = sources/nitro
 	url = https://github.com/nitrojs/nitro
+[submodule "vendor/code-review-skill"]
+	path = vendor/code-review-skill
+	url = https://github.com/awesome-skills/code-review-skill

@@ -1,6 +1,11 @@
 export interface VendorSkillMeta {
   official?: boolean
   source: string
+  /**
+   * 技能路径相对 vendor 根目录；默认 `skills`（即 `vendor/{name}/skills/{skill}/`）。
+   * 设为 `.` 时表示技能在 submodule 仓库根目录（例如整个仓库即一个 skill）。
+   */
+  skillsRoot?: string
   skills: Record<string, string> // sourceSkillName -> outputSkillName
 }
 
@@ -65,11 +70,19 @@ export const vendors: Record<string, VendorSkillMeta> = {
       'web-design-guidelines': 'web-design-guidelines',
     },
   },
+  'code-review-skill': {
+    source: 'https://github.com/awesome-skills/code-review-skill',
+    skillsRoot: '.',
+    skills: {
+      '.': 'code-review-skill',
+    },
+  },
 }
 
 /**
- * Hand-written skills with Anthony Fu's preferences/tastes/recommendations
+ * Hand-maintained skills (not generated from upstream docs sync).
+ * 开发规范见仓库根目录 CODING_PRACTICES.md（非 skill、不同步上游）。
  */
 export const manual = [
-  'antfu',
+  'yxzn',
 ]
