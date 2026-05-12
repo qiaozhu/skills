@@ -3,7 +3,7 @@
  */
 import process from 'node:process'
 
-const CURL_URL = 'http://git.wuhanyunxi.top/front-end/lib/yxzn-skills.git/master/CODING_PRACTICES.md'
+const CURL_URL = 'https://github.com/qiaozhu/yxzn-skills.git/master/CODING_PRACTICES.md'
 
 if (process.env.CI === 'true' || process.env.SKIP_CODING_PRACTICES_HINT === '1')
   process.exit(0)
