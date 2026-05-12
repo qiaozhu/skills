@@ -1,6 +1,6 @@
 # Qiao's Skills
 
-This repository is forked from [Anthony Fu's Skills](https://github.com/antfu/skills), with added [code-review](https://github.com/awesome-skills/code-review-skill) skills and the **yxzn component library** skills.
+This repository is forked from [Anthony Fu's Skills](https://github.com/antfu/skills), with added [code-review](https://github.com/awesome-skills/code-review-skill) skills and the **yxzn-lib** skills.
 Additionally, a new coding standard has been added, which can be appended to ANGENT.md or CLAUDE.md. **See Coding Practices** for details.
 
 
@@ -29,13 +29,13 @@ pnpx skills add qiaozhu/skills --skill='*' -g
 ## Coding Practices
 | 内容 | 说明 |
 |-------|-------------|
-| [`CODING_PRACTICES.md`](CODING_PRACTICES.md) | [Karpathy's](https://github.com/forrestchang/andrej-karpathy-skills) Code of Conduct + [antfu's](https://github.com/antfu/skills) "Coding Practices"; this is not a skill, it is recommended to copy the full text into the business project's AGENTS.md / CLAUDE.md. Or import it using @ at the top. |
+| [`CODING_PRACTICES.md`](CODING_PRACTICES.md) | [Karpathy's](https://github.com/forrestchang/andrej-karpathy-skills) Code of Conduct + [Antfu's](https://github.com/antfu/skills) "Coding Practices"; this is not a skill, it is recommended to copy the full text into the business project's AGENTS.md / CLAUDE.md. Or import it using @ at the top. |
 
 ### Install
 
 Download:
 ```bash
-curl -o CODING_PRACTICES.md http://git.wuhanyunxi.top/front-end/lib/yxzn-skills.git/master/CODING_PRACTICES.md
+curl -o CODING_PRACTICES.md https://github.com/qiaozhu/yxzn-skills.git/master/CODING_PRACTICES.md
 ```
 
 Append to AGENTS.md or CLAUDE.md:
@@ -57,13 +57,11 @@ This collection is aim to be a one-stop collection of you are mainly working on 
 
 > Opinionated
 
+Maintained manually in-repo (fork-specific), e.g. **`yxzn-lib`** under `skills/`.
+
 | Skill | Description | Source |
 |-------|-------------|--------|
 | [yxzn-lib](https://github.com/qiaozhu/yxzn-skills) | Skills in building a component library based on element-plus secondary encapsulation | [Element Plus](https://element-plus.org/) |
-
-Maintained manually in-repo (fork-specific), e.g. **`yxzn`** under `skills/`.
-
-
 
 
 ### Skills Generated from Official Documentation

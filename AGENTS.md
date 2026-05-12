@@ -33,7 +33,7 @@ For projects that **already maintain their own skills**. We clone their repo as 
 
 ### Type 3: Hand-written Skills
 
-Maintained manually in-repo (fork-specific), e.g. **`yxzn`** under `skills/`.
+Maintained manually in-repo (fork-specific), e.g. **`yxzn-lib`** under `skills/`.
 
 ## Repository Structure
 

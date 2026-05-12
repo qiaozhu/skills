@@ -84,5 +84,5 @@ export const vendors: Record<string, VendorSkillMeta> = {
  * 开发规范见仓库根目录 CODING_PRACTICES.md（非 skill、不同步上游）。
  */
 export const manual = [
-  'yxzn',
+  'yxzn-lib',
 ]
