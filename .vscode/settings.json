@@ -39,5 +39,6 @@
     "css",
     "less",
     "scss"
-  ]
+  ],
+  "git.ignoreLimitWarning": true
 }
