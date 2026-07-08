@@ -18,6 +18,14 @@ pnpx skills add qiaozhu/skills --skill frontend-design
 
 安装命令读取 GitHub `qiaozhu/skills` 的默认分支。新增或修改 skill 后，必须提交并推送到 GitHub `main` 才能被安装工具发现。
 
+在已经安装 skills 的目标项目根目录中，同步该项目的全部 skills 到最新版本：
+
+```bash
+pnpx skills update --project --yes
+```
+
+`--project` 只更新当前项目内的 skills，不影响用户目录中的全局 skills；`--yes` 会跳过作用域确认，适合日常一键同步。
+
 ## Git 远程仓库
 
 本仓库使用两个 remote：
