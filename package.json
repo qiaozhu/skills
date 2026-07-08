@@ -4,11 +4,11 @@
   "packageManager": "pnpm@10.32.1",
   "scripts": {
     "lint": "eslint .",
-    "git:commit-push": "node scripts/git-commit-push.ts",
-    "publish:skills": "pnpm sync:upstream && pnpm sync:yxzn-lib && pnpm git:commit-push",
     "start": "node scripts/cli.ts",
     "sync:upstream": "node scripts/sync-upstream.ts",
     "sync:yxzn-lib": "node scripts/sync-yxzn-lib.ts",
+    "git:commit-push": "node scripts/git-commit-push.ts",
+    "publish:skills": "pnpm sync:upstream && pnpm sync:yxzn-lib && pnpm git:commit-push",
     "prepare": "simple-git-hooks && git submodule update --init --recursive && node scripts/hint-coding.ts"
   },
   "devDependencies": {

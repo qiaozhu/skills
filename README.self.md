@@ -51,7 +51,9 @@ git remote add upstream https://github.com/antfu/skills.git
 pnpm sync:upstream
 ```
 
-该命令要求当前处于干净的 `main` 分支，并校验 `upstream` 是否指向 `antfu/skills`。如果发生合并冲突，脚本会停止并保留冲突现场，必须手动解决后再发布。
+该命令要求当前处于 `main` 分支，并校验 `upstream` 是否指向 `antfu/skills`。工作区存在改动时，脚本会通过 `git stash --include-untracked` 自动保存全部已跟踪和未跟踪改动，同步成功后再执行 `git stash pop` 恢复。
+
+如果上游同步失败，脚本不会把个人改动叠加进冲突现场，原有改动会继续保留在 stash 中。处理完同步问题后执行 `git stash pop` 恢复。submodule 内部的未提交内容无法由父仓库安全 stash，遇到这种情况脚本会停止并要求手动处理。
 
 发生冲突时遵循以下原则：
 
@@ -198,7 +200,7 @@ pnpm sync:yxzn-lib
 pnpm git:commit-push
 ```
 
-任一步骤失败后，后续命令不会继续执行。`sync:upstream` 要求工作区干净，因此一键发布适合从干净的 `main` 分支开始执行同步发布；已有未提交的手写改动应先单独运行 `pnpm git:commit-push`。
+任一步骤失败后，后续命令不会继续执行。存在未提交的手写改动时，`sync:upstream` 会先自动 stash，同步成功后恢复改动；随后这些改动会和 `yxzn-lib` 的同步结果一起由 `git:commit-push` 提交并推送。
 
 ## 发布检查
 
