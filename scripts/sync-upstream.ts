@@ -61,7 +61,7 @@ try {
   run('git', ['merge', '--no-edit', 'upstream/main'])
   run('git', ['submodule', 'sync', '--recursive'])
   run('git', ['submodule', 'update', '--init', '--recursive'])
-  console.log('\n上游同步完成。检查变更后运行 pnpm publish:skills 发布。')
+  console.log('\n上游同步完成。')
 }
 catch (error) {
   console.error(error instanceof Error ? error.message : error)

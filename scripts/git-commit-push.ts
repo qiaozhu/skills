@@ -1,7 +1,7 @@
 /**
  * 校验、提交并推送当前 fork 的 main 分支到 GitHub。
  *
- * 用法：pnpm publish:skills -- "feat: update skills"
+ * 用法：pnpm git:commit-push -- "feat: update skills"
  */
 import { spawnSync } from 'node:child_process'
 import { dirname, join } from 'node:path'

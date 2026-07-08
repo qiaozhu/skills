@@ -155,23 +155,23 @@ description: 说明该 skill 的用途以及应在何时使用。
 ---
 ```
 
-## 一键发布
+## 提交并推送
 
 安装工具读取 GitHub `qiaozhu/skills` 的默认分支。新增或修改 skill 后，必须提交并推送到 GitHub `main` 才能被安装工具发现。
 
-校验、暂存、提交并推送到 GitHub `main`：
+独立执行校验、暂存、提交并推送到 GitHub `main`：
 
 ```bash
-pnpm publish:skills -- "feat: update skills"
+pnpm git:commit-push -- "feat: update skills"
 ```
 
 提交说明可以省略；脚本会使用包含当前日期的默认说明：
 
 ```bash
-pnpm publish:skills
+pnpm git:commit-push
 ```
 
-发布脚本会依次执行以下操作：
+提交脚本会依次执行以下操作：
 
 1. 确认当前位于 `main`，且 `origin` 指向 `qiaozhu/skills`。
 2. 拒绝发布尚未解决的 merge。
@@ -180,7 +180,25 @@ pnpm publish:skills
 5. 有变更时自动提交，没有变更时跳过提交。
 6. 执行 `git push origin main`。
 
-发布会暂存仓库中的全部改动，执行前应先通过 `git status --short` 确认没有无关文件。
+提交脚本会暂存仓库中的全部改动，执行前应先通过 `git status --short` 确认没有无关文件。
+
+## 一键发布
+
+一键发布会串行执行三个彼此独立的命令：同步上游仓库、同步 `yxzn-lib`，最后提交并推送：
+
+```bash
+pnpm publish:skills
+```
+
+等价于：
+
+```bash
+pnpm sync:upstream
+pnpm sync:yxzn-lib
+pnpm git:commit-push
+```
+
+任一步骤失败后，后续命令不会继续执行。`sync:upstream` 要求工作区干净，因此一键发布适合从干净的 `main` 分支开始执行同步发布；已有未提交的手写改动应先单独运行 `pnpm git:commit-push`。
 
 ## 发布检查
 
@@ -200,8 +218,8 @@ git status --short
 - 没有误提交 `.pnpm-store`、构建产物或临时文件。
 - submodule 指针和 `.gitmodules` 已一并提交。
 
-确认无误后使用一键发布命令：
+确认无误后提交并推送：
 
 ```bash
-pnpm publish:skills -- "feat: update skills"
+pnpm git:commit-push -- "feat: update skills"
 ```
