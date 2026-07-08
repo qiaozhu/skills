@@ -1,9 +1,3 @@
-# Qiao's Skills
-
-This repository is forked from [Anthony Fu's Skills](https://github.com/antfu/skills), with added [code-review](https://github.com/awesome-skills/code-review-skill) skills and the **yxzn-lib** skills.
-Additionally, a new coding standard has been added, which can be appended to ANGENT.md or CLAUDE.md. **See Coding Practices** for details.
-
-
 # Anthony Fu's Skills
 
 A curated collection of [Agent Skills](https://agentskills.io/home) reflecting [Anthony Fu](https://github.com/antfu)'s preferences, experience, and best practices, along with usage documentation for the tools.
@@ -14,38 +8,15 @@ A curated collection of [Agent Skills](https://agentskills.io/home) reflecting [
 
 ## Installation
 
-
 ```bash
-pnpx skills add qiaozhu/skills --skill='*'
+pnpx skills add antfu/skills --skill='*'
 ```
 
 or to install all of them globally:
 
 ```bash
-pnpx skills add qiaozhu/skills --skill='*' -g
+pnpx skills add antfu/skills --skill='*' -g
 ```
-
-
-## Coding Practices
-| 内容 | 说明 |
-|-------|-------------|
-| [`CODING_PRACTICES.md`](CODING_PRACTICES.md) | [Karpathy's](https://github.com/forrestchang/andrej-karpathy-skills) Code of Conduct + [Antfu's](https://github.com/antfu/skills) "Coding Practices"; this is not a skill, it is recommended to copy the full text into the business project's AGENTS.md / CLAUDE.md. Or import it using @ at the top. |
-
-### Install
-
-Download:
-```bash
-curl -o CODING_PRACTICES.md curl -o CODING_PRACTICES.md https://raw.githubusercontent.com/qiaozhu/skills/master/CODING_PRACTICES.md
-```
-
-Append to AGENTS.md or CLAUDE.md:
-```bash
-echo "@CODING_PRACTICES.md" | cat - AGENTS.md > temp && mv temp AGENTS.md
-echo "@CODING_PRACTICES.md" | cat - CLAUDE.md > temp && mv temp CLAUDE.md
-```
-
-
-
 
 Learn more about the CLI usage at [skills](https://github.com/vercel-labs/skills).
 
@@ -57,16 +28,14 @@ This collection is aim to be a one-stop collection of you are mainly working on 
 
 > Opinionated
 
-Maintained manually in-repo (fork-specific), e.g. **`yxzn-lib`** under `skills/`.
+Manually maintained by Anthony Fu with his preferred tools, setup conventions, and best practices.
 
-| Skill | Description | Source |
-|-------|-------------|--------|
-| [yxzn-lib](https://github.com/qiaozhu/skills) | Skills in building a component library based on element-plus secondary encapsulation | [Element Plus](https://element-plus.org/) |
-| [antfu](skills/antfu) | Anthony Fu's preferences and best practices for app/library projects (eslint, pnpm, vitest, vue, etc.) | [antfu/skills](https://github.com/antfu/skills) |
-| [antfu-design](skills/antfu-design) | UnoCSS-centered design principles, semantic tokens, and UI presentation patterns from Anthony Fu's tooling UIs | [antfu/skills](https://github.com/antfu/skills) |
+| Skill | Description |
+|-------|-------------|
+| [antfu](skills/antfu) | Anthony Fu's preferences and best practices for app/library projects (eslint, pnpm, vitest, vue, etc.) |
+| [antfu-design](skills/antfu-design) | UnoCSS-centered design principles, semantic tokens, and UI presentation patterns from Anthony Fu's tooling UIs |
 
 ### Skills Generated from Official Documentation
-
 
 > Unopinionated but with tilted focus (e.g. TypeScript, ESM, Composition API, and other modern stacks)
 
