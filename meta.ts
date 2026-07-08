@@ -70,6 +70,13 @@ export const vendors: Record<string, VendorSkillMeta> = {
       'web-design-guidelines': 'web-design-guidelines',
     },
   },
+  'claude-code': {
+    source: 'https://github.com/anthropics/claude-code',
+    skillsRoot: 'plugins/frontend-design/skills',
+    skills: {
+      'frontend-design': 'frontend-design',
+    },
+  },
   'code-review-skill': {
     source: 'https://github.com/awesome-skills/code-review-skill',
     skillsRoot: '.',
