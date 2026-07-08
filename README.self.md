@@ -39,15 +39,13 @@ git remote add upstream https://github.com/antfu/skills.git
 
 ## 同步上游
 
-拉取并合并上游 `main`：
+一键拉取并合并上游 `main`，随后同步和初始化 submodules：
 
 ```bash
-git switch main
-git fetch upstream
-git merge upstream/main
-git submodule sync --recursive
-git submodule update --init --recursive
+pnpm sync:upstream
 ```
+
+该命令要求当前处于干净的 `main` 分支，并校验 `upstream` 是否指向 `antfu/skills`。如果发生合并冲突，脚本会停止并保留冲突现场，必须手动解决后再发布。
 
 发生冲突时遵循以下原则：
 
@@ -55,12 +53,11 @@ git submodule update --init --recursive
 - 保留 fork 在 `meta.ts`、`skills/yxzn-lib`、`skills/frontend-design` 和本文件中的自定义内容。
 - `README.md` 跟随上游；fork 专属说明只写在 `README.self.md`。
 
-校验并推送：
+解决冲突后完成合并：
 
 ```bash
-pnpm lint
-git diff --check
-git push origin main
+git add --all
+git commit
 ```
 
 ## 更新已有 Vendor Skills
@@ -152,6 +149,31 @@ description: 说明该 skill 的用途以及应在何时使用。
 ---
 ```
 
+## 一键发布
+
+校验、暂存、提交并推送到 GitHub `main`：
+
+```bash
+pnpm publish:skills -- "feat: update skills"
+```
+
+提交说明可以省略；脚本会使用包含当前日期的默认说明：
+
+```bash
+pnpm publish:skills
+```
+
+发布脚本会依次执行以下操作：
+
+1. 确认当前位于 `main`，且 `origin` 指向 `qiaozhu/skills`。
+2. 拒绝发布尚未解决的 merge。
+3. 使用项目本地 ESLint 执行完整 lint，并执行 `git diff --check`。
+4. 使用 `git add --all` 暂存全部变更。
+5. 有变更时自动提交，没有变更时跳过提交。
+6. 执行 `git push origin main`。
+
+发布会暂存仓库中的全部改动，执行前应先通过 `git status --short` 确认没有无关文件。
+
 ## 发布检查
 
 每次新增或更新 skill 后执行：
@@ -170,10 +192,8 @@ git status --short
 - 没有误提交 `.pnpm-store`、构建产物或临时文件。
 - submodule 指针和 `.gitmodules` 已一并提交。
 
-最后发布：
+确认无误后使用一键发布命令：
 
 ```bash
-git add meta.ts .gitmodules README.self.md skills sources vendor
-git commit -m "feat: update skills"
-git push origin main
+pnpm publish:skills -- "feat: update skills"
 ```
