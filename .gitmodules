@@ -46,3 +46,6 @@
 [submodule "vendor/code-review-skill"]
 	path = vendor/code-review-skill
 	url = https://github.com/awesome-skills/code-review-skill
+[submodule "vendor/claude-code"]
+	path = vendor/claude-code
+	url = https://github.com/anthropics/claude-code
