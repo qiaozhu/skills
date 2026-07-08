@@ -174,7 +174,7 @@ pnpm git:commit-push
 提交脚本会依次执行以下操作：
 
 1. 确认当前位于 `main`，且 `origin` 指向 `qiaozhu/skills`。
-2. 拒绝发布尚未解决的 merge。
+2. 拒绝提交尚未解决的 merge。
 3. 使用项目本地 ESLint 执行完整 lint，并执行 `git diff --check`。
 4. 使用 `git add --all` 暂存全部变更。
 5. 有变更时自动提交，没有变更时跳过提交。

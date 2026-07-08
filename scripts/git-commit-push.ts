@@ -49,7 +49,7 @@ function gitSucceeds(args: string[]): boolean {
   return result.status === 0
 }
 
-/** 发布目标固定为 GitHub fork 的 main 分支，防止误推到 upstream。 */
+/** 推送目标固定为 GitHub fork 的 main 分支，防止误推到 upstream。 */
 function assertReadyToPublish(): void {
   const branch = readGit(['branch', '--show-current'])
   if (branch !== 'main')
@@ -84,7 +84,7 @@ try {
     console.log('没有新的代码变更，跳过提交。')
 
   run('git', ['push', 'origin', 'main'])
-  console.log('\n发布完成：https://github.com/qiaozhu/skills')
+  console.log('\n提交并推送完成：https://github.com/qiaozhu/skills')
 }
 catch (error) {
   console.error(error instanceof Error ? error.message : error)
