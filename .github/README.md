@@ -1,6 +1,6 @@
 # qiaozhu/skills 维护说明
 
-本文档仅用于维护 `qiaozhu/skills` fork。上游项目说明见 [README.md](README.md)，同步上游时不要将本文件内容合并到上游 README。
+本文档仅用于维护 `qiaozhu/skills` fork。上游项目说明见 [README.md](../README.md)，同步上游时不要将本文件内容合并到上游 README。
 
 ## 安装 Skills
 
@@ -59,7 +59,7 @@ pnpm sync:upstream
 
 - 上游生成或同步的通用 skill 文件采用上游版本。
 - 保留 fork 在 `meta.ts`、`skills/yxzn-lib`、`skills/frontend-design` 和本文件中的自定义内容。
-- `README.md` 跟随上游；fork 专属说明只写在 `README.self.md`。
+- 根目录 `README.md` 跟随上游；fork 专属说明只写在 `.github/README.md`。
 
 解决冲突后完成合并：
 
