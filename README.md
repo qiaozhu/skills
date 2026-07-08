@@ -62,7 +62,8 @@ Maintained manually in-repo (fork-specific), e.g. **`yxzn-lib`** under `skills/`
 | Skill | Description | Source |
 |-------|-------------|--------|
 | [yxzn-lib](https://github.com/qiaozhu/skills) | Skills in building a component library based on element-plus secondary encapsulation | [Element Plus](https://element-plus.org/) |
-
+| [antfu](skills/antfu) | Anthony Fu's preferences and best practices for app/library projects (eslint, pnpm, vitest, vue, etc.) | [antfu/skills](https://github.com/antfu/skills) |
+| [antfu-design](skills/antfu-design) | UnoCSS-centered design principles, semantic tokens, and UI presentation patterns from Anthony Fu's tooling UIs | [antfu/skills](https://github.com/antfu/skills) |
 
 ### Skills Generated from Official Documentation
 

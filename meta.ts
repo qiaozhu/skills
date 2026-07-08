@@ -85,4 +85,6 @@ export const vendors: Record<string, VendorSkillMeta> = {
  */
 export const manual = [
   'yxzn-lib',
+  'antfu',
+  'antfu-design',
 ]
