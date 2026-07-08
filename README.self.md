@@ -16,8 +16,6 @@ pnpx skills add qiaozhu/skills --skill='*'
 pnpx skills add qiaozhu/skills --skill frontend-design
 ```
 
-安装命令读取 GitHub `qiaozhu/skills` 的默认分支。新增或修改 skill 后，必须提交并推送到 GitHub `main` 才能被安装工具发现。
-
 在已经安装 skills 的目标项目根目录中，同步该项目的全部 skills 到最新版本：
 
 ```bash
@@ -158,6 +156,8 @@ description: 说明该 skill 的用途以及应在何时使用。
 ```
 
 ## 一键发布
+
+安装工具读取 GitHub `qiaozhu/skills` 的默认分支。新增或修改 skill 后，必须提交并推送到 GitHub `main` 才能被安装工具发现。
 
 校验、暂存、提交并推送到 GitHub `main`：
 
