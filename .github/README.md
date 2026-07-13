@@ -24,6 +24,27 @@ pnpx skills update --project --yes
 
 `--project` 只更新当前项目内的 skills，不影响用户目录中的全局 skills；`--yes` 会跳过作用域确认，适合日常一键同步。
 
+
+## 关于 CODING_PRACTICES.md
+| 内容 | 说明 |
+|-------|-------------|
+| [`CODING_PRACTICES.md`](CODING_PRACTICES.md) | 该规范是由 [Karpathy's](https://github.com/forrestchang/andrej-karpathy-skills) 行为准则  + [Antfu's](https://github.com/antfu/skills) 编码实践合并而来；这不是一个 skills，建议将全文复制到业务项目的 AGENTS.md / CLAUDE.md 文件中。或者在文件顶部使用 @ 符号导入。
+
+### 安装
+
+下载文件:
+```bash
+curl -o CODING_PRACTICES.md curl -o CODING_PRACTICES.md https://raw.githubusercontent.com/qiaozhu/skills/master/CODING_PRACTICES.md
+```
+
+在 AGENTS.md 或 CLAUDE.md 中添加引用：
+```bash
+echo "@CODING_PRACTICES.md" | cat - AGENTS.md > temp && mv temp AGENTS.md
+echo "@CODING_PRACTICES.md" | cat - CLAUDE.md > temp && mv temp CLAUDE.md
+```
+
+了解更多关于 CLI 用法的信息，请访问 [skills](https://github.com/vercel-labs/skills).
+
 ## Git 远程仓库
 
 本仓库使用两个 remote：
