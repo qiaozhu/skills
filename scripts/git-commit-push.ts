@@ -75,6 +75,9 @@ function getCommitMessage(): string {
 try {
   assertReadyToPublish()
   run(process.execPath, [join(root, 'node_modules/eslint/bin/eslint.js'), '.'])
+  // 发布前验证补丁落地、skill 入口及同步工具行为；任一步失败均不暂存或推送。
+  run(process.execPath, [join(root, 'scripts/validate-skills.ts')])
+  run(process.execPath, ['--test', join(root, 'scripts/maintenance.test.ts')])
   run('git', ['diff', '--check'])
   run('git', ['add', '--all'])
 

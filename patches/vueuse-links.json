@@ -1,0 +1,13 @@
+{
+  "id": "vueuse-links",
+  "source": "https://github.com/vueuse/vueuse",
+  "reason": "修复安装目录中不存在的 VueUse 文档链接。",
+  "replacements": [
+    {
+      "file": "skills/vueuse-functions/SKILL.md",
+      "before": "| [`useSSRWidth`](references/useSSRWidth.md) | Used to set a global viewport width which will be used when rendering SSR components that rely on the viewport width like [`useMediaQuery`](../useMediaQuery/index.md) or [`useBreakpoints`](../useBreakpoints/index.md) | AUTO |",
+      "after": "| [`useSSRWidth`](references/useSSRWidth.md) | Used to set a global viewport width which will be used when rendering SSR components that rely on the viewport width like [`useMediaQuery`](references/useMediaQuery.md) or [`useBreakpoints`](references/useBreakpoints.md) | AUTO |",
+      "count": 1
+    }
+  ]
+}

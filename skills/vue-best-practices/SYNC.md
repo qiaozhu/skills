@@ -2,4 +2,4 @@
 
 - **Source:** `vendor/vuejs-ai/skills/vue-best-practices`
 - **Git SHA:** `c9d355ff23f654309dd02006be671859df0a134c`
-- **Synced:** 2026-05-11
+- **Synced:** 2026-09-11

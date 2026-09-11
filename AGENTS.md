@@ -1,4 +1,14 @@
-@CODING_PRACTICES.md
+Read and follow [CODING_PRACTICES.md](CODING_PRACTICES.md) and the fork workflow in [.github/README.md](.github/README.md).
+
+## Fork maintenance rules
+
+- 所有代码必须写注释；遵循既有习惯、避免单次使用的过度抽象。
+- 业务项目的目录、框架版本、运行环境与格式化规则放在业务项目 AGENTS.md，不写入通用 skills。
+- 通用 skills 应检查目标项目实际依赖和配置，不把生成资料时使用的版本当作所有项目的强制版本。
+- `vendor/` 与同步产物不直接定制。通用修复记录在 `patches/*.json`，同步后运行 `pnpm patches:apply`；补丁冲突必须审核，不能跳过。
+- 大幅定制使用独立 skill 名称并注册到 `meta.ts` 的 manual，禁止与其他来源共用输出目录。
+- 发布前运行 `pnpm check:skills`、`pnpm test`、`pnpm lint` 和 `git diff --check`。日常同步用 `pnpm sync:skills`，审查后才使用提交发布命令。
+
 # Skills Generator
 
 Generate [Agent Skills](https://agentskills.io/home) from project documentation.
@@ -12,7 +22,7 @@ PLEASE STRICTLY FOLLOW THE BEST PRACTICES FOR SKILL: https://platform.claude.com
 
 ## Skill Source Types
 
-There are two types of skill sources. The project lists are defined in `meta.ts`:
+There are three types of skill sources. The project lists are defined in `meta.ts`:
 
 ### Type 1: Generated Skills (`sources/`)
 
@@ -127,7 +137,7 @@ Maintained manually in-repo (fork-specific), e.g. **`yxzn-lib`** under `skills/`
 2. **Copy** changed files from `vendor/{project}/skills/{skill-name}/` to `skills/{output-name}/`
 3. **Update** `SYNC.md` with new SHA
 
-**Note:** Do NOT modify synced skills manually. Changes should be contributed upstream to the vendor project.
+**Note:** Do NOT modify synced skills manually. Contribute general fixes upstream; maintain pending fixes as reviewed entries in `patches/*.json` and apply them after syncing. Keep project-specific policies in the consuming project AGENTS.md.
 
 ## File Formats
 

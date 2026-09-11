@@ -1,5 +1,5 @@
 # Sync Info
 
 - **Source:** `vendor/code-review-skill` (repository root)
-- **Git SHA:** `eb12fb247ba09fd8a2bce0d1ecafa99df0bf4891`
-- **Synced:** 2026-05-11
+- **Git SHA:** `4850184dfd7765ea7b3c5c4e9b6cf8e0815ee7cb`
+- **Synced:** 2026-09-11

@@ -78,6 +78,8 @@ var add = (int a, int b = 1) => a + b;
 
 ## 异步编程
 
+> 📖 通用并发模式和跨语言示例详见 [异步与并发跨语言指南](cross-cutting/async-concurrency-patterns.md)
+
 ### Task.Wait() / .Result / async void 是严重反模式
 
 ```csharp
@@ -175,6 +177,8 @@ await using var client = new DataClient();
 
 ### N+1 查询问题
 
+> 📖 通用原理和跨语言方案详见 [N+1 查询跨语言指南](cross-cutting/n-plus-one-queries.md)
+
 ```csharp
 // ❌ 经典 N+1——每个 Blog 触发一次查询获取 Posts
 foreach (var blog in await context.Blogs.ToListAsync())
@@ -247,7 +251,7 @@ var blogs = await context.Blogs
 // ❌ 默认跟踪——只读查询也付出跟踪开销
 var products = await context.Products.ToListAsync();
 
-// ✅ AsNoTracking——性能提升 ~30%，内存减少 ~40%
+// ✅ AsNoTracking——跳过变更跟踪，更快且更省内存
 var products = await context.Products
     .AsNoTracking()
     .ToListAsync();
@@ -334,7 +338,7 @@ var form = await HttpContext.Request.ReadFormAsync();
 ### 异常用于控制流
 
 ```csharp
-// ❌ 用异常判断是否存在——比检查慢 10-100 倍
+// ❌ 用异常判断是否存在——异常开销大，比直接检查慢得多
 try
 {
     var user = await _db.Users.FirstAsync(u => u.Id == id);

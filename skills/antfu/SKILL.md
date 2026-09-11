@@ -109,7 +109,7 @@ export default antfu()
 
 When completing tasks, run `pnpm run lint --fix` to format the code and fix coding style.
 
-For detailed configuration options: [antfu-eslint-config](references/antfu-eslint-config.md)
+For detailed configuration options: [antfu-eslint-config](https://github.com/antfu/eslint-config)
 
 ### Git Hooks
 
@@ -144,8 +144,8 @@ Avoid the default catalog. Catalog names can be adjusted per project needs.
 
 | Topic | Description | Reference |
 |-------|-------------|-----------|
-| ESLint Config | Framework support, formatters, rule overrides, VS Code settings | [antfu-eslint-config](references/antfu-eslint-config.md) |
+| ESLint Config | Framework support, formatters, rule overrides, VS Code settings | [antfu-eslint-config](https://github.com/antfu/eslint-config) |
 | Project Setup | .gitignore, GitHub Actions, VS Code extensions | [setting-up](references/setting-up.md) |
 | App Development | Vue/Nuxt/UnoCSS conventions, auto-import control, Storybook component testing | [app-development](references/app-development.md) |
-| Library Development | tsdown bundling, pure ESM publishing | [library-development](references/library-development.md) |
+| Library Development | tsdown bundling, pure ESM publishing | [library-development](https://tsdown.dev/) |
 | Monorepo | pnpm workspaces, centralized alias, Turborepo | [monorepo](references/monorepo.md) |

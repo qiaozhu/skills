@@ -6,4 +6,8 @@ export default antfu({
     '**/sources/**',
     '**/skills/**',
   ],
+}, {
+  // 维护脚本使用 Node 内建测试，无需新增测试框架。
+  files: ['scripts/maintenance.test.ts'],
+  rules: { 'test/no-import-node-test': 'off' },
 })

@@ -1,0 +1,19 @@
+{
+  "id": "antfu-links",
+  "source": "https://github.com/antfu/skills",
+  "reason": "未随 skill 分发的参考文件改为相应工具的官方文档入口。",
+  "replacements": [
+    {
+      "file": "skills/antfu/SKILL.md",
+      "before": "(references/antfu-eslint-config.md)",
+      "after": "(https://github.com/antfu/eslint-config)",
+      "count": 2
+    },
+    {
+      "file": "skills/antfu/SKILL.md",
+      "before": "(references/library-development.md)",
+      "after": "(https://tsdown.dev/)",
+      "count": 1
+    }
+  ]
+}

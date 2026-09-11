@@ -17,6 +17,24 @@ Copy and use this template for your code reviews.
 - [Good patterns or approaches used]
 - [Improvements from previous code]
 
+## Architecture & Performance
+
+**Architecture Assessment**
+- [ ] Separation of concerns — are responsibilities clearly divided?
+- [ ] Module responsibilities — does each module have a single purpose?
+- [ ] Dependency direction — do dependencies flow toward stability?
+- [ ] Consistent with existing patterns and conventions
+
+> See [Architecture Review Guide](../reference/architecture-review-guide.md) for detailed SOLID, anti-pattern, and coupling analysis.
+
+**Performance Assessment**
+- [ ] Algorithm complexity — any O(n²) or worse on large inputs?
+- [ ] Memory impact — large allocations, leaks, unbounded growth?
+- [ ] I/O impact — excessive API calls, unbatched writes, missing caching?
+- [ ] Database queries — N+1 risks, missing indexes, unoptimized joins?
+
+> See [Performance Review Guide](../reference/performance-review-guide.md) for comprehensive Web Vitals, N+1, and caching guidance.
+
 ## Required Changes
 
 🔴 **[blocking]** [Issue description]
@@ -38,11 +56,11 @@ Copy and use this template for your code reviews.
 
 💡 **[suggestion]** [Alternative approach to consider]
 
-## Questions
+## Learning Notes
 
-❓ [Clarification needed about X]
+📚 [Educational context worth sharing about X]
 
-❓ [Question about design decision Y]
+📚 [Background behind design decision Y]
 
 ## Security Considerations
 
@@ -50,6 +68,11 @@ Copy and use this template for your code reviews.
 - [ ] Input validation present
 - [ ] Authorization checks in place
 - [ ] No SQL/XSS injection risks
+- [ ] CSRF protection for state-changing operations
+- [ ] Sensitive data not leaked in logs/errors
+- [ ] Dependency vulnerabilities checked (npm audit / pip audit / cargo audit)
+
+> See [Security Review Guide](../reference/security-review-guide.md) for comprehensive injection, XSS, CSRF, secrets, and auth checklist.
 
 ## Test Coverage
 
@@ -106,9 +129,9 @@ Not blocking, but consider [improvement].
 [Why this is good]
 ```
 
-### Question
+### Learning
 ```
-❓ **[question]** [Your question]
+📚 **[learning]** [Educational note]
 
-I'm curious about the decision to [X]. Could you explain [Y]?
+For context, [X] works this way because [Y]. No action needed — just sharing.
 ```

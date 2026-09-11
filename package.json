@@ -8,8 +8,13 @@
     "sync:upstream": "node scripts/sync-upstream.ts",
     "sync:yxzn-lib": "node scripts/sync-yxzn-lib.ts",
     "git:commit-push": "node scripts/git-commit-push.ts",
-    "publish:skills": "pnpm sync:upstream && pnpm sync:yxzn-lib && pnpm git:commit-push",
-    "prepare": "simple-git-hooks && git submodule update --init --recursive && node scripts/hint-coding.ts"
+    "publish:skills": "pnpm sync:skills && pnpm git:commit-push",
+    "prepare": "simple-git-hooks && git submodule update --init --recursive && node scripts/hint-coding.ts",
+    "patches:apply": "node scripts/skill-patches.ts",
+    "patches:check": "node scripts/skill-patches.ts --check",
+    "check:skills": "node scripts/validate-skills.ts",
+    "test": "node --test scripts/maintenance.test.ts",
+    "sync:skills": "pnpm sync:upstream && pnpm start sync && pnpm sync:yxzn-lib && pnpm patches:apply && pnpm check:skills"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^7.7.2",
@@ -18,7 +23,8 @@
     "eslint": "^10.0.3",
     "lint-staged": "^16.3.3",
     "simple-git-hooks": "^2.13.1",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "yaml": "^2.8.2"
   },
   "simple-git-hooks": {
     "pre-commit": "pnpm lint-staged"

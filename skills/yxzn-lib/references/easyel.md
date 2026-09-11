@@ -12,7 +12,6 @@
 | `beforeUpload` | `Function` | 上传前钩子 |
 | `uploadHttpRequest` | `Function` | 自定义上传请求 |
 | `requestFunction` | `Function` | 全局列表请求函数 |
-| `tablePaginationKeyMap` | `object` | 分页字段名映射 |
 | `tableScrollbarAlwaysOn` | `boolean` | 表格是否常显滚动条 |
 
 ```ts
@@ -20,8 +19,7 @@
 app.use(EasyEl, {
   uploadAction: '/api/upload',
   uploadHeader: { token: '...' },
-  requestFunction: useAxios,
-  tablePaginationKeyMap: { list: 'rows', total: 'total', pageNum: 'pageNum', pageSize: 'pageSize' }
+  requestFunction: useAxios
 })
 ```
 
@@ -74,14 +72,20 @@ type TableColumn<T> = {
 ### useTable
 
 ```ts
+import { createUseTable } from '@yxzn/easyel'
+
+const useTable = createUseTable({
+  requestFunction: useAxios,
+  tablePaginationKeyMap: { list: 'rows', total: 'totalCount', pageNum: 'pageNo', pageSize: 'pageSize' }
+})
+
 const tableState = useTable<TRow, TQuery>({
-  query,                                      // 搜索条件
+  query,                      // 搜索条件
   requestConfig: { url: '...', method: 'post' },
-  fetchMode: 'always',                        // 'always' | 'once' | 'none'
-  localData: [],                              // none 模式下的本地数据
-  pagination: { pageSize: 20 },              // 初始分页配置
-  tablePaginationKeyMap: { list: 'rows' },   // 覆盖全局字段映射
-  onBeforeSearch: () => true,                 // 查询前校验
+  fetchMode: 'always',        // 'always' | 'once' | 'none'
+  localData: [],              // none 模式下的本地数据
+  pagination: { pageSize: 20 },
+  onBeforeSearch: () => true, // 查询前校验
   onBeforeRequest: (payload) => ({ status: true, data: payload }),
   onAfterResponse: (result, pagination) => ({ status: true, data: result })
 })

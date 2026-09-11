@@ -18,27 +18,9 @@
 
 ### XSS 防护
 
-```python
-from django.utils.safestring import mark_safe
-from django.template import engines
+Django 模板引擎默认自动转义。审查重点：`mark_safe`、`autoescape off`、`format_html` 的使用。
 
-# ❌ mark_safe 绕过自动转义，直接渲染用户输入
-def user_profile(request):
-    user_bio = request.user.bio  # 用户可控
-    return HttpResponse(mark_safe(f"<p>{user_bio}</p>"))
-
-# ❌ 在模板中手动关闭 autoescape
-# {% autoescape off %}{{ user_bio }}{% endautoescape %}
-
-# ✅ 让 Django 模板引擎自动转义
-# template: <p>{{ user_bio }}</p>
-
-# ✅ 必须使用 mark_safe 时，先手动转义
-from django.utils.html import escape
-
-def render_bio(bio: str) -> str:
-    return mark_safe(f"<p>{escape(bio)}</p>")
-```
+> **跨框架 XSS 防护详见 [XSS Prevention Guide](cross-cutting/xss-prevention.md)**，含 React/Vue/Angular/Svelte 示例及 CSP 配置。
 
 ### CSRF 防护
 
@@ -98,38 +80,9 @@ CSRF_COOKIE_SAMESITE = "Lax"
 
 ### SQL 注入防护
 
-```python
-from django.db import connection
+Django ORM 自动参数化查询。审查重点：`raw()`、`extra()`、`RawSQL`、`connection.cursor()` 中的字符串拼接。
 
-# ❌ 字符串拼接 SQL — SQL 注入风险
-def search_users(keyword):
-    query = f"SELECT * FROM auth_user WHERE username LIKE '%{keyword}%'"
-    with connection.cursor() as cursor:
-        cursor.execute(query)
-
-# ❌ extra() 方法不安全
-User.objects.extra(
-    where=[f"username = '{keyword}'"]
-)
-
-# ✅ 使用 ORM 参数化查询
-def search_users(keyword):
-    return User.objects.filter(username__icontains=keyword)
-
-# ✅ 原始 SQL 使用参数化
-def search_users(keyword):
-    with connection.cursor() as cursor:
-        cursor.execute(
-            "SELECT * FROM auth_user WHERE username LIKE %s",
-            [f"%{keyword}%"],
-        )
-
-# ✅ 使用 raw() 参数化
-User.objects.raw(
-    "SELECT * FROM auth_user WHERE username LIKE %s",
-    [f"%{keyword}%"],
-)
-```
+> **跨语言 SQL 注入防护详见 [SQL Injection Prevention Guide](cross-cutting/sql-injection-prevention.md)**，含 Python/Java/Go/Node.js/PHP/C# 示例及 ORM 不安全用法。
 
 ### 文件上传安全
 
@@ -164,6 +117,8 @@ def validate_upload(file):
 ---
 
 ## N+1 查询优化
+
+> 📖 通用原理和跨语言方案详见 [N+1 查询跨语言指南](cross-cutting/n-plus-one-queries.md)
 
 ### select_related（ForeignKey / OneToOne）
 
@@ -223,15 +178,15 @@ for author in authors:
 ### QuerySet 缓存误用
 
 ```python
-# ❌ 重复评估同一个 QuerySet
+# ❌ count() 后再迭代 —— 两次查询
 qs = Book.objects.all()
-count = len(qs)             # 评估 1: SELECT COUNT(*)
-titles = [b.title for b in qs]  # 评估 2: SELECT * — 缓存失效！
+count = qs.count()          # 查询 1: SELECT COUNT(*) — 不填充缓存
+titles = [b.title for b in qs]  # 查询 2: SELECT * — 重新评估
 
-# ✅ 使用 count() 和一次性迭代
+# ✅ 既要对象又要数量时，用 len() 触发一次评估并复用缓存
 qs = Book.objects.all()
-count = qs.count()          # SELECT COUNT(*) — 不填充缓存
-titles = [b.title for b in qs]  # SELECT * — 唯一一次评估
+count = len(qs)             # 查询 1: SELECT * — 全部加载并缓存
+titles = [b.title for b in qs]  # 复用缓存，无新查询
 
 # ✅ 如果需要多次迭代，先转 list
 books = list(Book.objects.all())  # 一次查询
@@ -239,18 +194,24 @@ count = len(books)
 titles = [b.title for b in books]
 ```
 
-### 切片不填充缓存
+### 切片/索引不填充缓存
 
 ```python
-# ❌ 切片后迭代触发两次查询
-qs = Book.objects.all()[:10]   # 切片：不填充缓存
-first = list(qs)               # 查询 1
-second = list(qs)              # 查询 2 — 重复！
+# ❌ 反复索引未评估的 QuerySet —— 每次都查库
+qs = Book.objects.all()
+qs[0]   # 查询 1: SELECT ... LIMIT 1
+qs[0]   # 查询 2 — 切片/索引不会填充缓存
 
-# ✅ 切片后立即转 list
-books = list(Book.objects.all()[:10])  # 一次查询
-first = books
-second = list(books)  # 使用 Python list，无查询
+# ✅ 先整体评估，缓存保存所有行，之后索引走缓存
+qs = Book.objects.all()
+list(qs)    # SELECT * — 评估并缓存全部行
+qs[0]       # 走缓存，无查询
+qs[5]       # 走缓存，无查询
+
+# ✅ 只需要前 N 条时，切一次并转 list
+books = list(Book.objects.all()[:10])  # 一次查询：SELECT ... LIMIT 10
+first = books[0]
+rest = books[1:]   # 已是 Python list，无查询
 ```
 
 ### len() vs count()
@@ -743,31 +704,28 @@ class TimingMiddleware:
         response["X-Elapsed"] = str(elapsed)
         return response
 
-# ✅ 同时支持同步和异步的中间件
+# ✅ async-capable 中间件：async def __call__，并在 __init__ 里标记实例
 import time
+from asgiref.sync import iscoroutinefunction, markcoroutinefunction
 
 class TimingMiddleware:
     async_capable = True
-    sync_capable = True
+    sync_capable = False
 
     def __init__(self, get_response):
         self.get_response = get_response
+        # get_response 是协程函数时标记自己，Django 才会 await 这个实例
+        if iscoroutinefunction(self.get_response):
+            markcoroutinefunction(self)
 
-    async def __acall__(self, request):
+    async def __call__(self, request):
         start = time.time()
         response = await self.get_response(request)
         elapsed = time.time() - start
         response["X-Elapsed"] = str(elapsed)
         return response
 
-    def __call__(self, request):
-        start = time.time()
-        response = self.get_response(request)
-        elapsed = time.time() - start
-        response["X-Elapsed"] = str(elapsed)
-        return response
-
-# ✅ 或者使用 Django 内置的 async 安全装饰器
+# ✅ 要同时兼容同步和异步，用工厂函数 + 内置装饰器
 from django.utils.decorators import sync_and_async_middleware
 ```
 
@@ -839,9 +797,8 @@ SECURE_HSTS_SECONDS = 31536000      # 1 year HSTS
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 SECURE_HSTS_PRELOAD = True
 SECURE_CONTENT_TYPE_NOSNIFF = True   # X-Content-Type-Options: nosniff
-SECURE_BROWSER_XSS_FILTER = True     # X-XSS-Protection: 1; mode=block
 X_FRAME_OPTIONS = "DENY"             # 防止 clickjacking
-REFERRER_POLICY = "strict-origin-when-cross-origin"
+SECURE_REFERRER_POLICY = "strict-origin-when-cross-origin"
 
 # --- 密码验证 ---
 AUTH_PASSWORD_VALIDATORS = [

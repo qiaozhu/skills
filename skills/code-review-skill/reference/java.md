@@ -2,6 +2,8 @@
 
 Java 审查重点：Java 17/21 新特性、Spring Boot 3 最佳实践、并发编程（虚拟线程）、JPA 性能优化以及代码可维护性。
 
+> For Java 8 / Spring Boot 2 / `javax.*` legacy stacks, use the [Java 8 Guide](java8.md).
+
 ## 目录
 
 - [现代 Java 特性 (17/21+)](#现代-java-特性-1721)
@@ -193,6 +195,8 @@ public record PaymentProperties(String apiKey, int timeout, String url) {}
 
 ### N+1 查询问题
 
+> 📖 通用原理和跨语言方案详见 [N+1 查询跨语言指南](cross-cutting/n-plus-one-queries.md)
+
 ```java
 // ❌ FetchType.EAGER 或 循环中触发懒加载
 // Entity 定义
@@ -292,7 +296,7 @@ private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 // ✅ 使用 DateTimeFormatter (Java 8+)
 private static final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-// ❌ HashMap 在多线程环境可能死循环或数据丢失
+// ❌ HashMap 在多线程环境会数据丢失（Java 7 及之前 resize 还可能死循环，Java 8 修复了死循环但仍非线程安全）
 // ✅ 使用 ConcurrentHashMap
 Map<String, String> cache = new ConcurrentHashMap<>();
 ```

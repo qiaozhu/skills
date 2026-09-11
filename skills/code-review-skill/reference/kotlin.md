@@ -17,6 +17,8 @@
 
 ## 协程：作用域与取消
 
+> 📖 通用并发模式和跨语言示例详见 [异步与并发跨语言指南](cross-cutting/async-concurrency-patterns.md)
+
 ### 避免 GlobalScope
 
 ```kotlin
@@ -694,7 +696,7 @@ class MyManager(private val scope: CoroutineScope) {
     }
 }
 
-// ✅ ViewModel 中使用 closeableScope（Kotlin 2.1+）
+// ✅ ViewModel 里直接用内置的 viewModelScope，不用自己管生命周期
 class MyViewModel : ViewModel() {
     private val scope = viewModelScope + Dispatchers.IO
     // Automatically cancelled when ViewModel is cleared

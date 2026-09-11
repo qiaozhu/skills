@@ -40,5 +40,6 @@
     "less",
     "scss"
   ],
-  "git.ignoreLimitWarning": true
+  "git.ignoreLimitWarning": true,
+  "vsicons.presets.nestjs": true
 }

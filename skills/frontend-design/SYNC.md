@@ -1,5 +1,5 @@
 # Sync Info
 
-- **Source:** `vendor/claude-code/skills/frontend-design`
-- **Git SHA:** `d0f5bebd40c098c5913b6419a2ecfc7104f0cd41`
-- **Synced:** 2026-07-08
+- **Source:** `vendor/claude-code/plugins/frontend-design/skills/frontend-design`
+- **Git SHA:** `536a2e23d9e28586f81f17b3535281b5f2995a70`
+- **Synced:** 2026-09-11

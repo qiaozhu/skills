@@ -1,0 +1,13 @@
+{
+  "id": "tsdown-migrate-link",
+  "source": "https://github.com/rolldown/tsdown",
+  "reason": "独立安装的迁移 skill 不在当前 skill 目录内，使用上游仓库链接。",
+  "replacements": [
+    {
+      "file": "skills/tsdown/SKILL.md",
+      "before": "(../tsdown-migrate/SKILL.md)",
+      "after": "(https://github.com/rolldown/tsdown/blob/main/skills/tsdown-migrate/SKILL.md)",
+      "count": 1
+    }
+  ]
+}

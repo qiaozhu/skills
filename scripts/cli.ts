@@ -1,4 +1,4 @@
-import { execSync } from 'node:child_process'
+import { execFileSync, execSync } from 'node:child_process'
 import { cpSync, existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import process from 'node:process'
@@ -186,18 +186,52 @@ async function initSubmodules(skipPrompt = false) {
   }
 }
 
+/** 同步 vendor 产物；配置和来源完整性检查失败时以非零状态阻断发布。 */
 async function syncSubmodules() {
+  // 在复制前排除 manual/generated 与 vendor 的输出冲突。
+  const outputs = [...Object.keys(submodules), ...manual]
+  for (const config of Object.values(vendors))
+    outputs.push(...Object.values(config.skills))
+  if (new Set(outputs).size !== outputs.length)
+    throw new Error('meta.ts 的 skill 输出目录重复，请区分 manual、generated 与 vendor')
   const spinner = p.spinner()
 
-  // Update all submodules
-  spinner.start('Updating submodules...')
+  // 发布只刷新 vendor 来源；sources 的版本随父仓库固定，更新文档时另行处理。
+  const vendorPaths = Object.keys(vendors).map(name => `vendor/${name}`)
+  for (const path of vendorPaths) {
+    if (existsSync(join(root, path, '.git'))) {
+      const status = execFileSync('git', ['-C', path, 'status', '--porcelain'], { cwd: root, encoding: 'utf8' }).trim()
+      if (status)
+        throw new Error(`vendor 子模块存在未提交修改或冲突：${path}，请先处理后再同步`)
+    }
+  }
+  spinner.start('Updating vendor submodules...')
   try {
-    exec('git submodule update --remote --merge')
+    // checkout 不合并来源分支，也不使用 force；有本地改动时由前置检查阻断。
+    if (vendorPaths.length) {
+      execFileSync('git', ['submodule', 'update', '--init', '--remote', '--checkout', '--', ...vendorPaths], {
+        cwd: root,
+        encoding: 'utf8',
+        stdio: ['pipe', 'pipe', 'pipe'],
+      })
+    }
     spinner.stop('Submodules updated')
   }
   catch (e) {
     spinner.stop(`Failed to update submodules: ${e}`)
-    return
+    throw e
+  }
+
+  // 全部来源验证通过后才替换目录，避免缺少某个 vendor 时留下半批同步结果。
+  for (const [vendorName, config] of Object.entries(vendors)) {
+    const vendorPath = join(root, 'vendor', vendorName)
+    const base = join(vendorPath, config.skillsRoot ?? 'skills')
+    for (const sourceName of Object.keys(config.skills)) {
+      if (!existsSync(join(base, sourceName, 'SKILL.md')))
+        throw new Error(`缺少 vendor skill：${vendorName}/${sourceName}，请先检查 submodule 和 meta.ts`)
+    }
+    if (!getGitSha(vendorPath))
+      throw new Error(`无法读取 vendor Git SHA：${vendorName}`)
   }
 
   // Sync Type 2 skills
@@ -210,13 +244,11 @@ async function syncSubmodules() {
       : join(vendorPath, skillsRootRel)
 
     if (!existsSync(vendorPath)) {
-      p.log.warn(`Vendor submodule not found: ${vendorName}. Run init first.`)
-      continue
+      throw new Error(`Vendor submodule not found: ${vendorName}. Run init first.`)
     }
 
     if (skillsRootRel !== '.' && !existsSync(vendorSkillsBase)) {
-      p.log.warn(`No skills directory in vendor/${vendorName}/${skillsRootRel}/`)
-      continue
+      throw new Error(`No skills directory in vendor/${vendorName}/${skillsRootRel}/`)
     }
 
     // Sync each specified skill
@@ -226,8 +258,7 @@ async function syncSubmodules() {
 
       if (!existsSync(sourceSkillPath)) {
         const relHint = skillsRootRel === '.' ? sourceSkillName : `${skillsRootRel}/${sourceSkillName}`
-        p.log.warn(`Skill not found: vendor/${vendorName}/${relHint}`)
-        continue
+        throw new Error(`Skill not found: vendor/${vendorName}/${relHint}`)
       }
 
       spinner.start(`Syncing skill: ${sourceSkillName} → ${outputSkillName}`)
@@ -275,7 +306,7 @@ async function syncSubmodules() {
 
       const syncSource = skillsRootRel === '.'
         ? `\`vendor/${vendorName}\` (repository root)`
-        : `\`vendor/${vendorName}/skills/${sourceSkillName}\``
+        : `\`vendor/${vendorName}/${skillsRootRel}/${sourceSkillName}\``
 
       const syncContent = `# Sync Info
 
@@ -560,4 +591,8 @@ async function main() {
   p.outro('Done')
 }
 
-main().catch(console.error)
+// 顶层异常必须返回失败状态，避免串行发布命令继续执行。
+main().catch((error) => {
+  console.error(error instanceof Error ? error.message : error)
+  process.exitCode = 1
+})

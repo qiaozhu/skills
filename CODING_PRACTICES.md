@@ -1,6 +1,6 @@
 # Coding Practices
 
-The following are the code of conduct and coding practices for this project.
+This is the fork-maintained coding policy template. Review and copy it into consuming projects separately from skills updates; project-specific constraints belong in each project AGENTS.md.
 
 
 ## Project-Specific Guidelines
@@ -15,10 +15,10 @@ Behavioral guidelines to reduce common LLM coding mistakes. Merge with project-s
 
 Before implementing:
 
-- State your assumptions explicitly. If uncertain, ask.
-- If multiple interpretations exist, present them - don't pick silently.
+- State material assumptions explicitly; ask when missing information affects correctness or scope.
+- For low-impact reversible choices, follow existing conventions and state the assumption.
 - If a simpler approach exists, say so. Push back when warranted.
-- If something is unclear, stop. Name what's confusing. Ask.
+- Pause dependent work only for critical ambiguity; continue independent work.
 
 ## 2. Simplicity First
 
@@ -80,8 +80,8 @@ Strong success criteria let you loop independently. Weak criteria ("make it work
 
 - **Single responsibility**: Each source file should have a clear, focused scope/purpose
 - **Split large files**: Break files when they become large or handle too many concerns
-- **Type separation**: Always separate types and interfaces into `types.ts` or `types/*.ts`
-- **Constants extraction**: Move constants to a dedicated `constants.ts` file
+- **Type separation**: Follow existing conventions; extract types only when actual reuse or complexity justifies it. Avoid over-abstraction for single-use code
+- **Constants extraction**: Follow existing conventions; keep single-use constants local unless complexity justifies separation
 
 ### Runtime Environment
 
@@ -100,12 +100,5 @@ Strong success criteria let you loop independently. Weak criteria ("make it work
 
 ### Comments
 
-- **Avoid unnecessary comments**: Code should be self-explanatory
-- **Explain "why" not "how"**: Comments should describe the reasoning or intent, not what the code does
-
-
-<!--
-Provenance (for maintainers; safe to leave when pasting):
-- https://github.com/forrestchang/andrej-karpathy-skills
-- https://github.com/antfu/skills (Coding Practices section only)
--->
+- **Required comments**: All code must have comments; maintain corresponding comments for all code additions and modifications
+- **Current behavior and intent**: Describe current behavior, business intent, or constraints, without refactoring-process commentary

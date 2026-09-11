@@ -17,20 +17,40 @@ code-review-skill/
 ├── reference/                  # On-demand language/framework guides
 │   ├── react.md                # React 19 / Next.js / TanStack Query v5
 │   ├── vue.md                  # Vue 3.5 Composition API
+│   ├── angular.md              # Angular 17+, Signals, Standalone, RxJS
+│   ├── svelte.md               # Svelte 5 / SvelteKit, runes, SSR boundary
 │   ├── rust.md                 # Ownership, async, unsafe, cancellation
 │   ├── typescript.md           # Type safety, generics, strict mode
+│   ├── nestjs.md               # NestJS DI, modules, Guards/Pipes, DTOs
 │   ├── python.md               # Type hints, async, testing
+│   ├── django.md               # Django / DRF, N+1, serializers, async views
+│   ├── fastapi.md              # FastAPI, Depends, Pydantic v2, async
 │   ├── java.md                 # Java 17/21, Spring Boot 3, virtual threads
+│   ├── java8.md                # Java 8, Spring Boot 2, javax.*, legacy stack
+│   ├── kotlin.md               # Kotlin / Android, coroutines, Flow, Compose
+│   ├── swift.md                # Swift 5.9+/6, SwiftUI, concurrency, optionals
+│   ├── dart.md                 # Dart / Flutter rebuilds, null safety, isolates, state
 │   ├── go.md                   # Error handling, goroutines, context
+│   ├── csharp.md               # C# / .NET 8, async, EF Core, ASP.NET Core
+│   ├── php.md                  # PHP 8.x, types, PDO, security, Composer
+│   ├── ruby.md                 # Ruby 3.4+/4.0, Rails 8.x, Active Record/Job
 │   ├── c.md                    # Memory safety, UB, error handling
 │   ├── cpp.md                  # RAII, move semantics, exception safety
+│   ├── zig.md                  # Allocators, error unions, comptime, C interop
 │   ├── qt.md                   # Object model, signals/slots, GUI perf
 │   ├── css-less-sass.md        # Variables, responsive, performance
 │   ├── architecture-review-guide.md  # SOLID, anti-patterns, coupling
 │   ├── performance-review-guide.md   # Web Vitals, N+1, complexity
 │   ├── security-review-guide.md      # OWASP Top 10, JWT, validation
 │   ├── common-bugs-checklist.md      # Quick-reference bug patterns
-│   └── code-review-best-practices.md # Communication & process
+│   ├── code-quality-universal.md      # Language-agnostic quality anti-patterns
+│   ├── code-review-best-practices.md # Communication & process
+│   └── cross-cutting/               # Language-agnostic cross-cutting patterns
+│       ├── sql-injection-prevention.md # Parameterized queries, 6 languages
+│       ├── xss-prevention.md           # Output encoding, CSP, 5 frameworks
+│       ├── n-plus-one-queries.md       # N+1 queries, eager loading, 5 languages
+│       ├── error-handling-principles.md # Error handling principles, 7 languages
+│       └── async-concurrency-patterns.md # Concurrency patterns, 7 languages
 ├── assets/                     # Templates and quick reference
 │   ├── review-checklist.md
 │   └── pr-review-template.md
@@ -73,7 +93,7 @@ allowed-tools: ["Read", "Grep", "Glob"]  # 可选：限制工具访问
 - 避免下划线或大写字母
 
 ```
-✅ 正确：code-review-excellence, typescript-advanced-types
+✅ 正确：code-review-skill, typescript-advanced-types
 ❌ 错误：CodeReview, code_review, TYPESCRIPT
 ```
 
@@ -148,6 +168,18 @@ Claude 只在需要时加载支持文件，不会一次性加载所有内容。
 - 使用相对路径（相对于 Skill 目录）
 - 使用正斜杠 `/`，不使用反斜杠
 - 不需要 `./` 前缀
+
+### 约定（Conventions）
+
+**严重级别（severity）**：审查意见统一使用 SKILL.md「Technique 4」的标记方案，三档由红到绿表示优先级：
+
+- 🔴 `[blocking]` - 合并前必须修复
+- 🟡 `[important]` - 应当修复，有异议可讨论
+- 🟢 `[nit]` - 可选优化，不阻塞合并
+
+新增 reference 指南时请沿用这套标记，不要自创等价的名称（如 critical/warning/suggestion）。
+
+**语言策略**：现有指南是中英混合的——部分通篇中文，部分（如 fastapi.md、php.md）以英文为主。新增内容时**跟随同一领域既有指南的语言**：改某个指南就用它的语言；新建指南可自行选择中文或英文，但单个文件内部保持一致。
 
 ---
 
@@ -306,7 +338,7 @@ feat: 添加 Go 语言代码审查指南
 
 将修改后的 Skill 复制到 `~/.claude/skills/` 目录，然后在 Claude Code 中测试：
 ```bash
-cp -r ai-code-review-guide ~/.claude/skills/code-review-excellence
+cp -r code-review-skill ~/.claude/skills/code-review-skill
 ```
 
 ### Q: 我应该更新 SKILL.md 还是 reference 文件？
